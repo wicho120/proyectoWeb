@@ -10,20 +10,13 @@ body{
 
 .main{
     display: grid;
-    grid-template-rows: repeat(15, 1fr);
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     grid-template-areas: 
-        "section_1_texto section_1_texto section_1_img section_1_img"
-        "section_1_texto section_1_texto section_1_img section_1_img"
-        "section_1_texto section_1_texto section_1_img section_1_img"
-        "section_1_texto section_1_texto section_1_img section_1_img"
-        "section_2_texto section_2_texto section_2_img section_2_img"
-        "section_2_texto section_2_texto section_2_img section_2_img"
-        "section_2_texto section_2_texto section_2_img section_2_img"
-        "section_2_texto section_2_texto section_2_img section_2_img"
+        "article_1"
+        "article_2"
     ;
 }
-
 
 .header{
     color: white;
@@ -34,8 +27,6 @@ body{
     justify-content: space-between;
     align-items: center;
 }
-
-
 
 .header_container_foods p{
     display: flex;
@@ -66,6 +57,21 @@ body{
     margin-right: 1em;
 }
 
+
+
+.article_1{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 
+        "section_1_texto section_1_texto section_1_img section_1_img"
+        "section_1_texto section_1_texto section_1_img section_1_img"
+        "section_1_texto section_1_texto section_1_img section_1_img"
+        "section_1_texto section_1_texto section_1_img section_1_img"
+    ;
+    margin-bottom: 5em;
+}
+
 .section_1_text{
     grid-area: section_1_texto;
     display: flex;
@@ -73,22 +79,6 @@ body{
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 2em;
-}
-
-
-.section_1_img{
-    grid-area: section_1_img;
-    display: flex;
-    justify-content: flex-start;
-    position: relative;
-    margin-left: 2em;
-
-}
-
-.section_1_img img{
-    width: 30vw;
-    height: 50vh;
-
 }
 
 .section_1_text h1{
@@ -115,40 +105,223 @@ body{
     color: white;
 }
 
-.section_2_img{
-    grid-area: section_2_img;
+.section_1_img{
+    grid-area: section_1_img;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    margin-left: 2em;
+
+}
+
+.section_1_img img{
+    width: 40vw;
+    height: 65vh;
+
 }
 
 
 
+.article_2{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas: 
+        "section_2_img section_2_img section_2_texto section_2_texto"
+        "section_2_img section_2_img section_2_texto section_2_texto"
+        "section_2_img section_2_img section_2_texto section_2_texto"
+        "section_2_img section_2_img section_2_texto section_2_texto"
+    ;
+    margin-bottom: 5em;
+}
+
+.section_2_text{
+    grid-area: section_2_texto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+}
+
+.section_2_text h2{
+    font-size: 3em;
+    color: white;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.section_2_text p{
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 1em;
+    color: white;
+}
+
+div .about_small{
+    color: var(--color-orange);
+}
+
+.section_2_text button{
+    height: 2em;
+    font-size: 1.5em;
+    background: var(--color-orange);
+    border-radius: 5px;
+    box-shadow: none;
+    border: none;
+    color: white;
+}
+
+.section_2_img{
+    grid-area: section_2_img;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-left: 2em;
+}
+
+.section_2_img img{
+    width: 40vw;
+    height: 60vh;
+
+}
+
+
+
+.article_3{
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+        "section_3_texto section_3_texto section_3_texto"
+        "section_3_img section_3_img section_3_img"
+        "section_3_img section_3_img section_3_img"
+    ;
+    margin-bottom: 5em;
+}
+
+.article_3 div h3,p{
+    margin: 0;
+}
+
+.section_3_text{
+    grid-area: section_3_texto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.article_3 div img{
+    width: 15vw;
+    height: 25vh;
+    object-fit: contain;
+}
+
+.section_3_img{
+    grid-area: section_3_img;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section_3_img div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+    height: 22rem;
+    background: var(--color-boxes); 
+}
+
+
 @media (width < 900px){
-    .main{
-        display: grid;
-        grid-template-rows: repeat(15, 1fr);
-        grid-template-columns: repeat(1, 1fr);
-        grid-template-areas: 
-            "section_1_texto"
-            "section_1_texto"
-            "section_1_img"
-            "section_1_img"        
-        ;
+    *{
+        font-size: 7px;
     }
 
     body{
         font-size: 11px;
     }
+
+    .article_1{
+        display: grid;
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-areas: 
+            "section_1_texto"
+            "section_1_texto"
+            "section_1_img"
+            "section_1_img"
+        ;
+    }
+    
     .section_1_img img{
         width: 70vw;
         height: 35vh;
-        
     }
 
     .section_1_img {
         justify-content: center;
         margin: 0;
     }
+
     .section_1_text div{
         text-align: center;
     }
+
+    .article_2{
+        display: grid;
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-areas: 
+        "section_2_texto"
+        "section_2_texto"
+        "section_2_img"
+        "section_2_img"
+        ;
+    }
+
+    .section_2_img img{
+        width: 70vw;
+        height: 30vh;
+    }
+
+    .section_2_img {
+        justify-content: center;
+        margin: 0;
+    }
+
+    .section_2_text{
+        justify-content: center;
+        text-align: center;
+    }
+
+    .article_3{
+        display: grid;
+        grid-template-rows: 0.5fr repeat(3, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-areas: 
+            "section_3_texto"
+            "section_3_img"
+            "section_3_img"
+            "section_3_img"
+        ;
+        margin-bottom: 5em;
+    }
+
+    .article_3 div img{
+        width: 20vw;
+        height: 35vh;
+        object-fit: contain;
+    }
+
+    .section_3_img{
+        flex-direction: column; 
+    }
 }
- 
