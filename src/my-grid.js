@@ -20,12 +20,15 @@ export class MyGrid extends LitElement {
   render() {
     return html`
     <main>
-        <section class="section_1_menu"></section>
-        <section class="section_2_products"></section>
+        <section class="section_1_menu"><my-section-1></my-section-1></section>
+        <section class="section_2_products"><my-section-2></my-section-2></section>
+    </main>
     `
   }
 
   static get styles() {
+
+
     return css`
     main{
         display: grid;
@@ -35,6 +38,7 @@ export class MyGrid extends LitElement {
             "section_1_menu section_2"
             "section_1_menu section_2"
         ;
+        background: gray;
     }
     
     .section_1_menu{
@@ -44,6 +48,7 @@ export class MyGrid extends LitElement {
         justify-content: space-around;
         align-items: center;
         text-align: center;
+        height: 100vh;
     }
     
     .section_2_products{
