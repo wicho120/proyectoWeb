@@ -39,6 +39,8 @@ export class MyGrid extends LitElement {
             "section_1_menu section_2"
         ;
         background: gray;
+        height: 100vh;
+        width: 100vw;
     }
     
     .section_1_menu{
@@ -54,11 +56,8 @@ export class MyGrid extends LitElement {
     .section_2_products{
         grid-area: section_2;
         background: var(--color-principal);
-        width: 80vw;
-        height: 63em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        width: 100%;
+        height: 100%;
     `
   }
 }

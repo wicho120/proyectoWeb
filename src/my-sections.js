@@ -3,7 +3,7 @@ import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
 
 const getData = async()=>{
-  let res = await fetch("http://localhost:5501/camiseta?id=1")
+  let res = await fetch("http://localhost:5501/pantalon")
   let data = await res.json();
   let dataUpdate = data.map(val =>{
       return {
@@ -89,64 +89,57 @@ export class Mysection2 extends LitElement {
     this.data;
   }
 
-  connectedCallback() {
+  static properties={
+    data: { type: Array }
+  }
+
+  async connectedCallback() {
     super.connectedCallback();
-    this.getData();
-  }
-
-  async getData() {
-    try {
-      let res = await fetch("http://localhost:5501/camiseta?id=1");
-      let data = await res.json();
-      this.data = data.map(val => ({
-        name: val.nombre,
-        img: val.imagen,
-        price: val.precio,
-        id: val.id
-      }));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
-
-  async render() {
     this.data = await getData();
-    this.requestUpdate();
-    return html`
-      <section class="section_2_products">
-        <article class="section_2_products_box">
+  }
 
-            <div id="contenedor" class="section_2_box_1">
-                <img src = "${this.data[0].img}"alt="">
+  render() {
+    return html`
+      <div class="container">
+        <article class="section_2_products_box">
+            ${this.data.map(datas => html`
+              <div id="contenedor">
+                <img src = "${datas.img}"alt="">
                 <div class="info_products">
                     <div>
-                        <p>${this.data[0].name}</p>
-                        <p>${this.data[0].price}</p>
+                        <p>${datas.name}</p>
+                        <p>${datas.price}</p>
                     </div>
                     <div>
                         <button>Añadir</button>
                     </div>
                 </div>
-            </div>
+              </div>
+              `
+            )}
         </article>
-      </section>
+      </div>
     `
-  }
+          }
 
   static get styles() {
 
 
     return css`
+      .container{
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+      }
+
       .section_2_products_box{
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        grid-template-areas: 
-        "section_2_box_1"
-        ;
-        width: 90em;
-        height: 60em;
-        background: gray;
+        grid-template-columns: repeat(2, 1fr);
+        width: 95%;
+        height: 95%;
+        background: #E3DAC9;
         border-radius: 2em;
         align-items: center;
         justify-items: center;
@@ -169,11 +162,6 @@ export class Mysection2 extends LitElement {
         width: 20vw;
         height: 30vh;
         object-fit: contain;
-      }
-    
-    
-      .section_2_box_1{
-        grid-area: section_2_box_1;
       }
     `
   }
