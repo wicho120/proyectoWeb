@@ -4,20 +4,41 @@ import viteLogo from '/vite.svg'
 
 
   const getData = async(types) => {
-    let res = await fetch(`http://localhost:5501/${types}`)
-    let data = await res.json();
-    let dataUpdate = data.map(val =>{
+
+    if(types != "todos"){
+      let res = await fetch(`http://localhost:5501/${types}`)
+      let data = await res.json();
+      let dataUpdate = data.map(val =>{
         return {
             name: val.nombre,
             img: val.imagen,
             price: val.precio,
-            id: val.id 
+            id: val.id   
         }
-    })
-
-    return dataUpdate
-    
-  
+        
+      })
+      return dataUpdate;
+    } 
+    else {
+      let allProducts = ["abrigo", "camiseta", "pantalon"];
+      
+      let datos = allProducts.map(async element => {
+        let res = await fetch(`http://localhost:5501/${element}`)
+        let data = await res.json();
+        let dataUpdate = data.map(async val =>{
+          return{
+              name: val.nombre,
+              img: val.imagen,
+              price: val.precio,
+              id: val.id
+            }
+          
+          })
+        return dataUpdate;
+        })
+      console.log(datos);
+      return datos;
+    }
   }
 
 export class Mysection1 extends LitElement {
@@ -39,16 +60,19 @@ export class Mysection1 extends LitElement {
       this.types = "camiseta";
     } if (e.target.textContent === "Pantalones"){
       this.types = "pantalon";
+    } if (e.target.textContent === "Todos los productos"){
+      this.types = "todos";
     }
     this.data = await getData(this.types);
     this.requestUpdate();
+    console.log(this.data)
   }
 
   async connectedCallback() {
     super.connectedCallback();
     this.data = await getData(this.types);
-  }
 
+  }
 
   render() {
     return html`
