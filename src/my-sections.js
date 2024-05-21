@@ -2,10 +2,8 @@ import { LitElement, css, html } from 'lit'
 import litLogo from './assets/lit.svg'
 import viteLogo from '/vite.svg'
 
+const getData = async(types) => {
 
-  const getData = async(types) => {
-
-    if(types != "todos"){
       let res = await fetch(`http://localhost:5501/${types}`)
       let data = await res.json();
       let dataUpdate = data.map(val =>{
@@ -19,41 +17,34 @@ import viteLogo from '/vite.svg'
       })
       return dataUpdate;
     } 
-    else {
-      let allProducts = ["abrigo", "camiseta", "pantalon"];
-      
-      let datos = allProducts.map(async element => {
-        let res = await fetch(`http://localhost:5501/${element}`)
-        let data = await res.json();
-        let dataUpdate = data.map(async val =>{
-          return{
-              name: val.nombre,
-              img: val.imagen,
-              price: val.precio,
-              id: val.id
-            }
-          
-          })
-        return dataUpdate;
-        })
-      console.log(datos);
-      return datos;
+
+
+const getDataByiD = async(types, id) => {
+
+      let res = await fetch(`http://localhost:5501/${types}?id=${id}`)
+      let data = await res.json();
+      let dataUpdate = data.map(val =>{
+        return {
+            name: val.nombre,
+            img: val.imagen,
+            price: val.precio,
+            id: val.id   
+        }
+        
+      })
+      return dataUpdate;
     }
-  }
 
 export class Mysection1 extends LitElement {
   constructor() {
     super();
-    this.data;
+    this.data = [];
+    this.dataAll = [];
     this.types="abrigo";
-  }
-
-  static properties={
-    data: { type: Array },
+    this.cart = [];
   }
 
   async handleMyEvent(e){
-    
     if(e.target.textContent === "Abrigos"){
       this.types = "abrigo";
     } if (e.target.textContent === "Camisetas"){
@@ -63,69 +54,115 @@ export class Mysection1 extends LitElement {
     } if (e.target.textContent === "Todos los productos"){
       this.types = "todos";
     }
-    this.data = await getData(this.types);
-    this.requestUpdate();
-    console.log(this.data)
+
+    let allProducts = ["abrigo", "camiseta", "pantalon"];
+    
+    if (this.types === "todos"){
+      this.data.splice(1, this.data.length)
+
+      allProducts.forEach(async element => {
+        this.dataUpdate = await getData(element);
+        this.dataUpdate.forEach(async element2 => {
+           this.data.push(await element2);
+           this.requestUpdate();  
+        })
+      }); 
+      this.data.shift();
+    } else {
+      this.data = await getData(this.types)
+      this.requestUpdate();
+    } 
   }
+
+  handleMyCart(e){
+    this.types = "cart";
+    this.requestUpdate();
+  }
+
+  async handleMyButton(e){
+    let container = e.target.parentNode;
+    let containerC = container.className.split("$");
+    
+    let index = containerC[0];
+    let id = containerC[1]
+
+    let dataGot = await getDataByiD(index, id);
+    let [cartData] = dataGot;
+
+    this.cart.push(cartData);
+    console.log(this.cart)
+    this.requestUpdate();
+
+  }
+
+
+
 
   async connectedCallback() {
     super.connectedCallback();
     this.data = await getData(this.types);
-
+    this.requestUpdate();
   }
 
   render() {
-    return html`
 
-    <main>
-        <section class="section_1_menu">
-          <div class="my-section-1-container">
-            <article class="section_1_menu_title">
-                <h1>CampusShop</h1>
-            </article>
+    if(this.types != "cart"){
+      return html`
 
-            <article class="section_1_menu_categories">
-                <p><button @click=${this.handleMyEvent}>Todos los productos</button></p>
-                <p><button @click=${this.handleMyEvent}>Abrigos</button></p>
-                <p><button @click=${this.handleMyEvent}>Camisetas</button></p>
-                <p><button @click=${this.handleMyEvent}>Pantalones</button></p>
-            </article>
-
-            <article class="section_1_menu_carrito">
-                <p><img src = "public/carrito-compra.svg"></img></p>
-            </article>
-
-            <article class="section_1_menu_firma">
-                <p>® 2024 Camper</p>
-            </article>
-          </div>
-        </section>
-
-
-        <section class="section_2_products">
-          <div class="container">
-            <article class="section_2_products_box">
-                ${this.data.map(datas => html`
-                  <div id="contenedor">
-                    <img src = "${datas.img}"alt="">
-                    <div class="info_products">
-                        <div>
-                            <p>${datas.name}</p>
-                            <p>${datas.price}</p>
-                        </div>
-                        <div>
-                            <button>Añadir</button>
-                        </div>
+      <main>
+          <section class="section_1_menu">
+            <div class="my-section-1-container">
+              <article class="section_1_menu_title">
+                  <h1>CampusShop</h1>
+              </article>
+  
+              <article class="section_1_menu_categories">
+                  <p><button @click=${this.handleMyEvent}>Todos los productos</button></p>
+                  <p><button @click=${this.handleMyEvent}>Abrigos</button></p>
+                  <p><button @click=${this.handleMyEvent}>Camisetas</button></p>
+                  <p><button @click=${this.handleMyEvent}>Pantalones</button></p>
+              </article>
+  
+              <article class="section_1_menu_carrito">
+                  <p><img src = "public/carrito-compra.svg" @click=${this.handleMyCart}></p>
+              </article>
+  
+              <article class="section_1_menu_firma">
+                  <p>® 2024 Camper</p>
+              </article>
+            </div>
+          </section>
+          <section class="section_2_products">
+            <div class="container">
+              <article class="section_2_products_box">
+                  ${this.data.map(datas => html`
+                    <div id="contenedor">
+                      <img src = "${datas.img}"alt="">
+                      <div class="info_products">
+                          <div>
+                              <p>${datas.name}</p>
+                              <p>${datas.price}</p>
+                          </div>
+                          <div class = "${this.types}$${datas.id} " >
+                              <button @click=${this.handleMyButton}>Añadir</button>
+                          </div>
+                      </div>
                     </div>
-                  </div>
-                  `
-                )}
-            </article>
-          </div>
-        </section>
-    </main>
-          
-    `
+                    `
+                  )}
+              </article>
+            </div>
+          </section>
+      </main>
+            
+      `
+
+    }else{
+      return html`
+      <div>Hola</div>
+      `
+    }
+
   }
 
 
