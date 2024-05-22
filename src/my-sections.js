@@ -12,14 +12,24 @@ const getData = async(types) => {
             img: val.imagen,
             price: val.precio,
             id: val.id   
-        }
+        } 
         
       })
       return dataUpdate;
     } 
 
 
-const getDataByiD = async(types, id) => {
+const getDataByiD = async(id) => {
+      let types = "";
+      if(id[1] == "A"){
+        types = "abrigo";
+      }
+      if(id[1] == "P"){
+        types = "pantalon";
+      }
+      if(id[1] == "C"){
+        types = "camiseta";
+      }
 
       let res = await fetch(`http://localhost:5501/${types}?id=${id}`)
       let data = await res.json();
@@ -42,9 +52,11 @@ export class Mysection1 extends LitElement {
     this.dataAll = [];
     this.types="abrigo";
     this.cart = [];
+    this.typeCart = ""
   }
 
   async handleMyEvent(e){
+    this.typeCart = "";
     if(e.target.textContent === "Abrigos"){
       this.types = "abrigo";
     } if (e.target.textContent === "Camisetas"){
@@ -75,22 +87,43 @@ export class Mysection1 extends LitElement {
   }
 
   handleMyCart(e){
-    this.types = "cart";
+    this.typeCart = "cart";
     this.requestUpdate();
+    
   }
 
   async handleMyButton(e){
+    let container = e.target.parentNode;
+    let containerC = container.className.split("$");
+  
+    let id = containerC[1]
+
+    let dataGot = await getDataByiD(id);
+    let [cartData] = dataGot;
+
+    this.cart.push(cartData);
+    console.log(this.cart)
+    this.requestUpdate();
+
+  }
+
+  async handleMyButtonDel(e){
     let container = e.target.parentNode;
     let containerC = container.className.split("$");
     
     let index = containerC[0];
     let id = containerC[1]
 
-    let dataGot = await getDataByiD(index, id);
-    let [cartData] = dataGot;
+    let copyCart = this.cart;
+    
+    copyCart.map(val => {
 
-    this.cart.push(cartData);
-    console.log(this.cart)
+      if(String(val.id) === id.slice(0,2)){
+        console.log("Hola")
+        this.cart.splice(copyCart.indexOf(val), 1)
+      }
+    })
+    console.log(this.cart);
     this.requestUpdate();
 
   }
@@ -106,7 +139,7 @@ export class Mysection1 extends LitElement {
 
   render() {
 
-    if(this.types != "cart"){
+    if(this.typeCart != "cart"){
       return html`
 
       <main>
@@ -158,10 +191,56 @@ export class Mysection1 extends LitElement {
       `
 
     }else{
-      return html`
-      <div>Hola</div>
-      `
-    }
+        return html`
+        <main>
+        <section class="section_1_menu">
+          <div class="my-section-1-container">
+            <article class="section_1_menu_title">
+                <h1>CampusShop</h1>
+            </article>
+  
+            <article class="section_1_menu_categories">
+                <p><button @click=${this.handleMyEvent}>Todos los productos</button></p>
+                <p><button @click=${this.handleMyEvent}>Abrigos</button></p>
+                <p><button @click=${this.handleMyEvent}>Camisetas</button></p>
+                <p><button @click=${this.handleMyEvent}>Pantalones</button></p>
+            </article>
+  
+            <article class="section_1_menu_carrito">
+                <p><img src = "public/carrito-compra.svg" @click=${this.handleMyCart}></p>
+            </article>
+  
+            <article class="section_1_menu_firma">
+                <p>® 2024 Camper</p>
+            </article>
+          </div>
+        </section>
+        <section class="section_2_products">
+          <div class="container">
+            <article class="section_2_products_box">
+                ${this.cart.map(datas => html`
+                  <div id="contenedor">
+                    <img src = "${datas.img}"alt="">
+                    <div class="info_products">
+                        <div>
+                            <p>${datas.name}</p>
+                            <p>${datas.price}</p>
+                        </div>
+                        <div class = "${datas.name}$${datas.id} " >
+                            <button @click=${this.handleMyButtonDel}>Eliminar</button>
+                        </div>
+                    </div>
+                  </div>
+                  `
+                )}
+            </article>
+          </div>
+        </section>
+    </main>
+        `
+      }
+
+    
 
   }
 
