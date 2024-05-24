@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 
 const getData = async(types) => {
 
-      let res = await fetch(`http://localhost:5501/${types}`)
+      let res = await fetch(`http://172.16.101.146:5748/${types}`)
       let data = await res.json();
       let dataUpdate = data.map(val =>{
         return {
@@ -31,7 +31,7 @@ const getDataByiD = async(id) => {
         types = "camiseta";
       }
 
-      let res = await fetch(`http://localhost:5501/${types}?id=${id}`)
+      let res = await fetch(`http://172.16.101.146:5748/${types}?id=${id}`)
       let data = await res.json();
       let dataUpdate = data.map(val =>{
         return {
