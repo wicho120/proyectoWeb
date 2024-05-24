@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "shop": "json-server src/db/shop.json --port 5748 -h 172.16.101.146"
+    "shop": "json-server -h 172.16.101.146 src/db/shop.json -p 5748"
   },
   "dependencies": {
     "json-server": "^1.0.0-beta.0",
